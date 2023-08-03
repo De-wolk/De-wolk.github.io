@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+#rentalForm {
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+#rentalForm label,
+#rentalForm input,
+#rentalForm select,
+#rentalForm button {
+    display: block;
+    margin: 10px 0;
+}
+
+#rentalForm button {
+    margin-top: 20px;
+}
+
+#rentalHistory {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px auto;
+}
+
+#rentalHistory th,
+#rentalHistory td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#rentalHistory th {
+    background-color: #f2f2f2;
+}
