@@ -28,6 +28,12 @@ h1 {
     margin-top: 20px;
 }
 
+#terugnameContainer {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+}
+
 #rentalHistory {
     border-collapse: collapse;
     width: 80%;
