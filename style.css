@@ -1,9 +1,8 @@
 body {
     background-image: url('https://www.de-wolk.be/themes/custom/bootstrap/starterkits/dewolkbe/images/backgrounds/home-bg.svg');
-    background-size: cover; /* Zorgt ervoor dat de afbeelding het hele scherm bedekt */
-    background-repeat: no-repeat; /* Voorkomt herhaling van de afbeelding */
-    background-attachment: fixed; /* Behoudt de achtergrondafbeelding op een vaste positie */
-}
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 h1 {
@@ -13,6 +12,8 @@ h1 {
 #rentalForm {
     max-width: 400px;
     margin: 20px auto;
+    border: 1px solid #ddd; /* Grijze rand */
+    padding: 20px;
 }
 
 #rentalForm label,
@@ -31,6 +32,8 @@ h1 {
     border-collapse: collapse;
     width: 80%;
     margin: 20px auto;
+    border: 1px solid #ddd; /* Grijze rand */
+    padding: 20px;
 }
 
 #rentalHistory th,
