@@ -1,5 +1,9 @@
 body {
-    font-family: Arial, sans-serif;
+    background-image: url('https://www.de-wolk.be/themes/custom/bootstrap/starterkits/dewolkbe/images/backgrounds/home-bg.svg');
+    background-size: cover; /* Zorgt ervoor dat de afbeelding het hele scherm bedekt */
+    background-repeat: no-repeat; /* Voorkomt herhaling van de afbeelding */
+    background-attachment: fixed; /* Behoudt de achtergrondafbeelding op een vaste positie */
+}
 }
 
 h1 {
