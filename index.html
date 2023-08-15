@@ -91,6 +91,8 @@
             const receiverLocation = document.getElementById("receiverLocation").value;
             const receiverContact = document.getElementById("receiverContact").value;
             const currentDate = new Date().toLocaleDateString();
+            const currentTime = new Date().toLocaleTimeString();
+
 
             // Voeg de uitgeleende kolf toe aan de geschiedenis
             rentalHistory.push({
@@ -98,7 +100,7 @@
                 borrower: borrowerName,
                 location: receiverLocation,
                 contact: receiverContact,
-                date: currentDate
+                date: `${currentDate} ${currentTime}`
             });
 
             // Upload de geschiedenis naar Firebase
@@ -108,7 +110,7 @@
                     borrower: borrowerName,
                     location: receiverLocation,
                     contact: receiverContact,
-                    date: currentDate
+                    date: `${currentDate} ${currentTime}`
                 })
                 .then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
