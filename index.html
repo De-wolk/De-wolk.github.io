@@ -9,12 +9,11 @@
 <body>
     <h1>Verhuursysteem voor Kolven</h1>
     <form id="rentalForm">
-        
-        <div>
-            <label for="kolfName">Kolfnaam:</label>
-            <select id="kolfName" style="display: inline-block; vertical-align: middle;"></select>
-            <button type="button" style="display: inline-block; vertical-align: middle;" onclick="addKolf()">Kolf Toevoegen</button>
-            <button type="button" style="display: inline-block; vertical-align: middle;" onclick="removeKolf()">Kolf Verwijderen</button>
+        <label for="kolfName">Kolfnaam:</label>
+        <div style="display: flex; align-items: center;">
+            <select id="kolfName" style="margin-right: 10px;"></select>
+            <button type="button" onclick="addKolf()">Kolf Toevoegen</button>
+            <button type="button" onclick="removeKolf()">Kolf Verwijderen</button>
         </div>
 
 
