@@ -10,7 +10,12 @@
     <h1>Verhuursysteem voor Kolven</h1>
     <form id="rentalForm">
         <label for="kolfName">Kolfnaam:</label>
-        <select id="kolfName">
+        <div>
+            <select id="kolfName" style="display: inline-block; vertical-align: middle;"></select>
+            <button type="button" style="display: inline-block; vertical-align: middle;" onclick="addKolf()">Kolf Toevoegen</button>
+            <button type="button" style="display: inline-block; vertical-align: middle;" onclick="removeKolf()">Kolf Verwijderen</button>
+        </div>
+
 
         </select>
         <label for="borrowerName">Naam:</label>
@@ -38,12 +43,6 @@
             <th>Verwijderen</th> <!-- Nieuwe kolom voor de verwijderknop -->
         </tr>
     </table>
-
-    <!-- Nieuwe knop om een kolf toe te voegen -->
-    <div>
-        <button type="button" onclick="addKolf()">Kolf Toevoegen</button>
-        <button type="button" onclick="removeKolf()">Kolf Verwijderen</button>
-    </div>
 
     <!-- Firebase SDK-scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
