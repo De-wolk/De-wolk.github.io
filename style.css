@@ -1,10 +1,16 @@
 body {
-    font-family: "Roboto", sans-serif; /* Gebruik het Roboto-lettertype voor de hele pagina */
+    font-family: "Roboto", sans-serif;
     background-image: url('https://www.de-wolk.be/themes/custom/bootstrap/starterkits/dewolkbe/images/backgrounds/home-bg.svg');
-    background-size: cover; /* Zorgt ervoor dat de afbeelding het hele scherm bedekt */
-    background-repeat: no-repeat; /* Voorkomt herhaling van de afbeelding */
-    background-attachment: fixed; /* Behoudt de achtergrondafbeelding op een vaste positie */
-}
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
@@ -29,9 +35,9 @@ h1 {
 }
 
 #terugnameContainer {
-        position: absolute;
-        top: 10px;
-        left: 10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 #rentalHistory {
