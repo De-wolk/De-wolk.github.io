@@ -1,4 +1,5 @@
 body {
+    font-family: "Roboto", sans-serif; /* Gebruik het Roboto-lettertype voor de hele pagina */
     background-image: url('https://www.de-wolk.be/themes/custom/bootstrap/starterkits/dewolkbe/images/backgrounds/home-bg.svg');
     background-size: cover; /* Zorgt ervoor dat de afbeelding het hele scherm bedekt */
     background-repeat: no-repeat; /* Voorkomt herhaling van de afbeelding */
@@ -7,7 +8,6 @@ body {
 }
 
 h1 {
-    font-family: "Roboto", sans-serif; /* Gebruik het Roboto-lettertype voor de hele pagina */
     text-align: center;
 }
 
