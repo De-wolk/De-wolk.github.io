@@ -150,6 +150,10 @@
                 </tr>
             `;
 
+            // Sorteer de verhuur geschiedenis op datum en tijd
+            rentalHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+
             // Vul de tabel met de verhuur geschiedenis
             for (let i = rentalHistory.length - 1; i >= 0; i--) {
                 const rental = rentalHistory[i];
