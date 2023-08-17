@@ -251,6 +251,7 @@
 
         // Laad de initiële verhuur geschiedenis bij het openen van de pagina
         db.collection("historiek_verhuur")
+            .orderBy("date", "desc") // Hier sorteer je op het "date" veld in aflopende volgorde
             .get()
             .then(function (querySnapshot) {
                 rentalHistory = [];
