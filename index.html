@@ -9,6 +9,7 @@
 <body>
     <h1>Verhuursysteem voor Kolven</h1>
     <form id="rentalForm">
+        <button id="refreshButton" style="position: absolute; top: 10px; right: 10px;">↻</button>
         <label for="kolfName">Kolfnaam:</label>
         <div style="display: flex; align-items: center;">
             <select id="kolfName" style="margin-right: 10px;"></select>
@@ -49,6 +50,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
+        // Voeg een eventlistener toe aan de vernieuwingsknop
+        document.getElementById("refreshButton").addEventListener("click", function() {
+            location.reload(); // Vernieuw de pagina wanneer er op de knop wordt geklikt
+        });
+
         // Functie om gegevens in Local Storage op te slaan
         function saveToLocalStorage(data) {
             localStorage.setItem('rentalHistory', JSON.stringify(data));
@@ -217,7 +223,18 @@
             const returnButtonsDiv = document.getElementById("returnButtons");
             returnButtonsDiv.innerHTML = ""; // Leeg de sectie
 
+            // Houd bij welke kolven al knoppen hebben
+            const existingKolven = new Set();
+
+            // Genereer knoppen voor elke kolf in de kolfList
             kolfList.forEach(kolf => {
+                // Voeg alleen knoppen toe voor kolven in de rentalHistory
+                if (existingKolven.has(kolf)) {
+                    return;
+                }
+        
+                existingKolven.add(kolf); // Voeg de kolf toe aan de set
+
                 const returnButton = document.createElement("button");
                 returnButton.textContent = `${kolf} Terugnemen`;
                 returnButton.addEventListener("click", function () {
@@ -232,8 +249,10 @@
             const index = rentalHistory.findIndex(rental => rental.kolf === kolfName);
             if (index !== -1) {
                 returnKolf(index); // Roep de terugname-functie op basis van de index
+                generateReturnButtons(); // Werk de knoppen voor terugname bij na het terugnemen
             }
         }
+
 
 
         // Roep de functie aan om de knoppen voor terugname te genereren bij het laden van de pagina
@@ -271,7 +290,7 @@
                     option.textContent = newKolfName;
                     document.getElementById("kolfName").appendChild(option);
 
-                    generateReturnButtons(); // Werk de knoppen voor terugname bij
+                    
                 } else {
                     alert("Kolf bestaat al in de lijst.");
                 }
@@ -290,7 +309,7 @@
                 selectBox.innerHTML = ""; // Leeg de selectbox
                 populateKolfSelectBox(); // Vul de selectbox opnieuw
 
-                generateReturnButtons(); // Werk de knoppen voor terugname bij
+                
             } else {
                 alert("Geselecteerde kolf komt niet voor in de lijst van beschikbare kolven.");
             }
