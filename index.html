@@ -244,14 +244,44 @@
             });
         }
 
-        // Functie om een kolf terug te nemen op basis van kolfnaam
         function returnKolfByKolfName(kolfName) {
             const index = rentalHistory.findIndex(rental => rental.kolf === kolfName);
             if (index !== -1) {
-                returnKolf(index); // Roep de terugname-functie op basis van de index
-                generateReturnButtons(); // Werk de knoppen voor terugname bij na het terugnemen
+                const currentDate = new Date().toLocaleDateString();
+                const currentTime = new Date().toLocaleTimeString();
+
+                // Voeg de nieuwe vermelding toe aan Firebase
+                db.collection("historiek_verhuur")
+                    .add({
+                        kolf: kolfName,
+                        borrower: "is op de wolk",
+                        location: "is op de wolk",
+                        contact: "is op de wolk",
+                        date: `${currentDate} ${currentTime}`
+                    })
+                    .then(function (docRef) {
+                        console.log("Nieuwe vermelding toegevoegd aan Firebase met ID: ", docRef.id);
+                        // Haal de vermelding opnieuw op uit Firebase om de ID en timestamp te krijgen
+                        db.collection("historiek_verhuur")
+                            .doc(docRef.id)
+                            .get()
+                            .then(function (doc) {
+                                const newRental = doc.data();
+                                rentalHistory.unshift(newRental); // Voeg de vermelding toe aan de geschiedenis bovenaan
+                                updateRentalHistoryTable(); // Werk de tabel bij
+                            })
+                            .catch(function (error) {
+                                console.log("Fout bij ophalen nieuwe vermelding uit Firebase: ", error);
+                            });
+                    })
+                    .catch(function (error) {
+                        console.error("Fout bij toevoegen van document aan Firebase: ", error);
+                    });
             }
         }
+
+
+
 
 
 
