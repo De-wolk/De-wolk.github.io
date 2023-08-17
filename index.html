@@ -26,12 +26,12 @@
         <input type="text" id="receiverContact" required>
         <div>
             <button type="button" style="display: inline-block;" onclick="rentKolf()">Kolf uitlenen</button>
-            <button type="button" style="display: inline-block;" onclick="goToTerugname()">terugname</button>
         </div>
 
 
     </form>
-
+    <h2>terugname</h2>
+    <div id="returnButtons"></div>
     <h2>Historiek Verhuur</h2>
     <table id="rentalHistory">
         <tr>
@@ -136,6 +136,30 @@
             updateRentalHistoryTable();
         }
 
+        // Functie om een kolf terug te nemen
+        function returnKolf(index) {
+            const returnedKolf = rentalHistory[index];
+            rentalHistory.splice(index, 1); // Verwijder de verhuur uit de geschiedenis
+            saveToLocalStorage(rentalHistory);
+            updateRentalHistoryTable();
+
+            // Voeg de teruggenomen kolf toe aan de "terugname" sectie
+            const returnButtonsDiv = document.getElementById("returnButtons");
+            const returnButton = document.createElement("button");
+            returnButton.textContent = `Kolf ${returnedKolf.kolf} Terugnemen`;
+            returnButton.addEventListener("click", function () {
+                rentKolf(); // Voeg de kolf opnieuw toe aan de verhuurgeschiedenis
+            });
+            returnButtonsDiv.appendChild(returnButton);
+        }
+
+
+
+
+
+
+
+
         // Functie om de verhuur geschiedenis tabel te updaten
         function updateRentalHistoryTable() {
             const table = document.getElementById("rentalHistory");
@@ -151,8 +175,15 @@
             `;
 
             // Sorteer de verhuur geschiedenis op datum en tijd
-            rentalHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
+            rentalHistory.sort((a, b) => {
+                const dateComparison = new Date(b.date) - new Date(a.date);
+                if (dateComparison === 0) {
+                    return new Date(b.date).getTime() - new Date(a.date).getTime();
+                }
+                return dateComparison;
+            });
+
+
 
             // Vul de tabel met de verhuur geschiedenis
             for (let i = 0; i < rentalHistory.length; i++) {
@@ -210,7 +241,19 @@
 
 
 
+
+
+
+
+
+
+       
         
+
+
+
+
+
 
         // Functie om een kolf toe te voegen
         function addKolf() {
@@ -227,6 +270,8 @@
                     option.value = newKolfName;
                     option.textContent = newKolfName;
                     document.getElementById("kolfName").appendChild(option);
+
+                    generateReturnButtons(); // Werk de knoppen voor terugname bij
                 } else {
                     alert("Kolf bestaat al in de lijst.");
                 }
@@ -244,6 +289,8 @@
                 const selectBox = document.getElementById("kolfName");
                 selectBox.innerHTML = ""; // Leeg de selectbox
                 populateKolfSelectBox(); // Vul de selectbox opnieuw
+
+                generateReturnButtons(); // Werk de knoppen voor terugname bij
             } else {
                 alert("Geselecteerde kolf komt niet voor in de lijst van beschikbare kolven.");
             }
@@ -291,7 +338,7 @@
                 });
                 updateRentalHistoryTable();
             })
-            .catch(function (error) {
+    .       catch(function (error) {
                 console.log("Error getting documents: ", error);
             });
 
