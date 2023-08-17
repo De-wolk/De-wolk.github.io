@@ -181,6 +181,37 @@
             }
         }
 
+        // Roep deze functie aan het begin op om de knoppen voor terugname te genereren
+        function generateReturnButtons() {
+            const returnButtonsDiv = document.getElementById("returnButtons");
+            returnButtonsDiv.innerHTML = ""; // Leeg de sectie
+
+            kolfList.forEach(kolf => {
+                const returnButton = document.createElement("button");
+                returnButton.textContent = `${kolf} Terugnemen`;
+                returnButton.addEventListener("click", function () {
+                    returnKolfByKolfName(kolf); // Roep de terugname-functie op basis van de kolfnaam
+                });
+                returnButtonsDiv.appendChild(returnButton);
+            });
+        }
+
+        // Functie om een kolf terug te nemen op basis van kolfnaam
+        function returnKolfByKolfName(kolfName) {
+            const index = rentalHistory.findIndex(rental => rental.kolf === kolfName);
+            if (index !== -1) {
+                returnKolf(index); // Roep de terugname-functie op basis van de index
+            }
+        }
+
+
+        // Roep de functie aan om de knoppen voor terugname te genereren bij het laden van de pagina
+        generateReturnButtons();
+
+
+
+        
+
         // Functie om een kolf toe te voegen
         function addKolf() {
             const newKolfName = prompt("Voer de naam van de nieuwe kolf in:");
