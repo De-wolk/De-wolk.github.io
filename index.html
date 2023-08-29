@@ -92,47 +92,68 @@
 
         // Functie om een kolf uit te lenen
         function rentKolf() {
-            const kolfName = document.getElementById("kolfName").value;
+       	    const kolfName = document.getElementById("kolfName").value;
             const borrowerName = document.getElementById("borrowerName").value;
             const receiverLocation = document.getElementById("receiverLocation").value;
             const receiverContact = document.getElementById("receiverContact").value;
             const currentDate = new Date().toLocaleDateString();
             const currentTime = new Date().toLocaleTimeString();
 
+            // Controleer de verhuurstatus van de kolf in Firestore
+            db.collection("kolven").doc(kolfName).get()
+                .then(function (doc) {
+                    if (doc.exists) {
+                        const isRented = doc.data().verhuurd;
+                        if (!isRented) {
+                            // Markeer de kolf als verhuurd
+                            db.collection("kolven").doc(kolfName).update({ verhuurd: true })
+                                .then(function () {
+                                    // Voeg de uitgeleende kolf toe aan de geschiedenis
+                                    rentalHistory.unshift({
+                                        kolf: kolfName,
+                                        borrower: borrowerName,
+                                        location: receiverLocation,
+                                        contact: receiverContact,
+                                        date: `${currentDate} ${currentTime}`
+                                    });
 
-            // Voeg de uitgeleende kolf toe aan de geschiedenis
-            rentalHistory.unshift({
-                kolf: kolfName,
-                borrower: borrowerName,
-                location: receiverLocation,
-                contact: receiverContact,
-                date: `${currentDate} ${currentTime}`
-            });
+                                    // Upload de geschiedenis naar Firebase
+                                    db.collection("historiek_verhuur").add({
+                                        kolf: kolfName,
+                                        borrower: borrowerName,
+                                        location: receiverLocation,
+                                        contact: receiverContact,
+                                        date: `${currentDate} ${currentTime}`
+                                    })
+                                        .then(function (docRef) {
+                                            console.log("Document written with ID: ", docRef.id);
+                                        })
+                                        .catch(function (error) {
+                                            console.error("Error adding document: ", error);
+                                        });
 
-            // Upload de geschiedenis naar Firebase
-            db.collection("historiek_verhuur")
-                .add({
-                    kolf: kolfName,
-                    borrower: borrowerName,
-                    location: receiverLocation,
-                    contact: receiverContact,
-                    date: `${currentDate} ${currentTime}`
-                })
-                .then(function (docRef) {
-                    console.log("Document written with ID: ", docRef.id);
+                                    // Sla de geschiedenis op in Local Storage
+                                    saveToLocalStorage(rentalHistory);
+
+                                    // Vernieuw de tabel met de geschiedenis
+                                    updateRentalHistoryTable();
+
+                                    // Reset het formulier
+                                    document.getElementById("rentalForm").reset();
+                                })
+                                .catch(function (error) {
+                                    console.error("Error updating kolf status: ", error);
+                                });
+                        } else {
+                            alert("Deze kolf is al verhuurd.");
+                        }
+                    } else {
+                        alert("Kolf niet gevonden in database.");
+                    }
                 })
                 .catch(function (error) {
-                    console.error("Error adding document: ", error);
+                    console.error("Error getting kolf document: ", error);
                 });
-
-            // Sla de geschiedenis op in Local Storage
-            saveToLocalStorage(rentalHistory);
-
-            // Vernieuw de tabel met de geschiedenis
-            updateRentalHistoryTable();
-
-            // Reset het formulier
-            document.getElementById("rentalForm").reset();
         }
 
         // Functie om een verhuur te verwijderen
@@ -145,21 +166,28 @@
         // Functie om een kolf terug te nemen
         function returnKolf(index) {
             const returnedKolf = rentalHistory[index];
-            rentalHistory.splice(index, 1); // Verwijder de verhuur uit de geschiedenis
-            saveToLocalStorage(rentalHistory);
-            updateRentalHistoryTable();
 
-            // Voeg de teruggenomen kolf toe aan de "terugname" sectie
-            const returnButtonsDiv = document.getElementById("returnButtons");
-            const returnButton = document.createElement("button");
-            returnButton.textContent = `Kolf ${returnedKolf.kolf} Terugnemen`;
-            returnButton.addEventListener("click", function () {
-                rentKolf(); // Voeg de kolf opnieuw toe aan de verhuurgeschiedenis
-            });
-            returnButtonsDiv.appendChild(returnButton);
+            // Markeer de kolf als niet verhuurd
+            db.collection("kolven").doc(returnedKolf.kolf).update({ verhuurd: false })
+                .then(function () {
+                    rentalHistory.splice(index, 1); // Verwijder de verhuur uit de geschiedenis
+                    saveToLocalStorage(rentalHistory);
+                    updateRentalHistoryTable();
+
+                    // Voeg de teruggenomen kolf toe aan de "terugname" sectie
+                    const returnButtonsDiv = document.getElementById("returnButtons");
+                    const returnButton = document.createElement("button");
+                    returnButton.textContent = `Kolf ${returnedKolf.kolf} Terugnemen`;
+                    returnButton.addEventListener("click", function () {
+                        returnKolf(); // Voeg de kolf opnieuw toe aan de verhuurgeschiedenis
+                    });
+                    returnButtonsDiv.appendChild(returnButton);
+
+                })
+                .catch(function (error) {
+                    console.error("Error updating kolf status: ", error);
+                });
         }
-
-
 
 
 
@@ -250,59 +278,51 @@
                 const currentDate = new Date().toLocaleDateString();
                 const currentTime = new Date().toLocaleTimeString();
 
-                // Voeg de nieuwe vermelding toe aan Firebase
-                db.collection("historiek_verhuur")
-                    .add({
-                        kolf: kolfName,
-                        borrower: "is op de wolk",
-                        location: "is op de wolk",
-                        contact: "is op de wolk",
-                        date: `${currentDate} ${currentTime}`
-                    })
-                    .then(function (docRef) {
-                        console.log("Nieuwe vermelding toegevoegd aan Firebase met ID: ", docRef.id);
-                        // Haal de vermelding opnieuw op uit Firebase om de ID en timestamp te krijgen
+                // Markeer de kolf als niet verhuurd in Firestore
+                db.collection("kolven").doc(kolfName).update({ verhuurd: false })
+                    .then(function () {
+                        rentalHistory.splice(index, 1); // Verwijder de verhuur uit de geschiedenis
+                        saveToLocalStorage(rentalHistory);
+                        updateRentalHistoryTable();
+
+                        // Voeg de nieuwe vermelding toe aan Firebase
                         db.collection("historiek_verhuur")
-                            .doc(docRef.id)
-                            .get()
-                            .then(function (doc) {
-                                const newRental = doc.data();
-                                rentalHistory.unshift(newRental); // Voeg de vermelding toe aan de geschiedenis bovenaan
-                                updateRentalHistoryTable(); // Werk de tabel bij
+                            .add({
+                                kolf: kolfName,
+                                borrower: "is op de wolk",
+                                location: "is op de wolk",
+                                contact: "is op de wolk",
+                                date: `${currentDate} ${currentTime}`
+                            })
+                            .then(function (docRef) {
+                                console.log("Nieuwe vermelding toegevoegd aan Firebase met ID: ", docRef.id);
+                                // Haal de vermelding opnieuw op uit Firebase om de ID en timestamp te krijgen
+                                db.collection("historiek_verhuur")
+                                    .doc(docRef.id)
+                                    .get()
+                                    .then(function (doc) {
+                                        const newRental = doc.data();
+                                        rentalHistory.unshift(newRental); // Voeg de vermelding toe aan de geschiedenis bovenaan
+                                        updateRentalHistoryTable(); // Werk de tabel bij
+
+                                        location.reload(); // Ververs de pagina
+                                    })
+                                    .catch(function (error) {
+                                        console.log("Fout bij ophalen nieuwe vermelding uit Firebase: ", error);
+                                    });
                             })
                             .catch(function (error) {
-                                console.log("Fout bij ophalen nieuwe vermelding uit Firebase: ", error);
+                                console.error("Fout bij toevoegen van document aan Firebase: ", error);
                             });
                     })
                     .catch(function (error) {
-                        console.error("Fout bij toevoegen van document aan Firebase: ", error);
+                        console.error("Error updating kolf status: ", error);
                     });
             }
         }
 
-
-
-
-
-
         // Roep de functie aan om de knoppen voor terugname te genereren bij het laden van de pagina
         generateReturnButtons();
-
-
-
-
-
-
-
-
-
-       
-        
-
-
-
-
-
 
         // Functie om een kolf toe te voegen
         function addKolf() {
@@ -311,16 +331,21 @@
                 // Controleer of de kolf al in de lijst staat voordat deze wordt toegevoegd
                 const existingKolf = kolfList.find(kolf => kolf === newKolfName);
                 if (!existingKolf) {
-                    kolfList.push(newKolfName); // Voeg de nieuwe kolf toe aan de lijst
-                    saveKolfListToLocalStorage(kolfList); // Sla de bijgewerkte lijst op in Local Storage
+                    // Voeg de nieuwe kolf toe aan Firestore met initiële verhuurstatus 'false'
+                    db.collection("kolven").doc(newKolfName).set({ verhuurd: false })
+                        .then(function () {
+                            kolfList.push(newKolfName); // Voeg de nieuwe kolf toe aan de lijst
+                            saveKolfListToLocalStorage(kolfList); // Sla de bijgewerkte lijst op in Local Storage
 
-                    // Voeg de nieuwe kolf ook toe aan de selectbox in het formulier
-                    const option = document.createElement("option");
-                    option.value = newKolfName;
-                    option.textContent = newKolfName;
-                    document.getElementById("kolfName").appendChild(option);
-
-                    
+                            // Voeg de nieuwe kolf ook toe aan de selectbox in het formulier
+                            const option = document.createElement("option");
+                            option.value = newKolfName;
+                            option.textContent = newKolfName;
+                            document.getElementById("kolfName").appendChild(option);
+                        })
+                        .catch(function (error) {
+                            console.error("Error adding kolf to Firestore: ", error);
+                        });
                 } else {
                     alert("Kolf bestaat al in de lijst.");
                 }
