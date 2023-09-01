@@ -1,5 +1,5 @@
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: 'San Francisco', 'Apple', sans-serif; /* San Francisco-lettertype als eerste keuze */
     background-image: url('https://www.de-wolk.be/themes/custom/bootstrap/starterkits/dewolkbe/images/backgrounds/home-bg.svg');
     background-size: cover;
     background-repeat: no-repeat;
