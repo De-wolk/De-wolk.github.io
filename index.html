@@ -1,3 +1,7 @@
+de wolk werkende officiele site:
+
+
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -83,7 +87,8 @@
                 "Kolf 2",
                 "Kolf 3",
                 "Kolf 4 Puurs",
-                "Kolf 5"
+                "Kolf 5",
+                "Kolf 6"
             ];
         }
 
@@ -204,6 +209,7 @@
                     <th>Adres</th>
                     <th>GSM</th>
                     <th>Datum Uitgeleend</th>
+                    <th>Verwijderen</th> <!-- Nieuwe kolom voor de verwijderknop -->
                 </tr>
             `;
 
@@ -227,6 +233,7 @@
                 const locationCell = row.insertCell(2);
                 const contactCell = row.insertCell(3);
                 const dateCell = row.insertCell(4);
+                const removeCell = row.insertCell(5);
 
                 kolfCell.textContent = rental.kolf;
                 borrowerCell.textContent = rental.borrower;
@@ -234,6 +241,13 @@
                 contactCell.textContent = rental.contact;
                 dateCell.textContent = rental.date;
 
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Verwijderen";
+                removeButton.addEventListener("click", function () {
+                    removeRental(i); // Verwijder de verhuur op basis van de index i
+                });
+
+                removeCell.appendChild(removeButton);
             }
         }
 
@@ -343,7 +357,23 @@
             }
         }
 
-        
+        // Functie om een kolf te verwijderen
+        function removeKolf() {
+            const selectedKolf = document.getElementById("kolfName").value;
+            // Controleer of de geselecteerde kolf in de lijst van kolven staat voordat deze wordt verwijderd
+            const existingKolf = kolfList.find(kolf => kolf === selectedKolf);
+            if (existingKolf) {
+                kolfList = kolfList.filter(kolf => kolf !== selectedKolf); // Verwijder de kolf uit de lijst
+                saveKolfListToLocalStorage(kolfList); // Sla de bijgewerkte lijst op in Local Storage
+                const selectBox = document.getElementById("kolfName");
+                selectBox.innerHTML = ""; // Leeg de selectbox
+                populateKolfSelectBox(); // Vul de selectbox opnieuw
+
+                
+            } else {
+                alert("Geselecteerde kolf komt niet voor in de lijst van beschikbare kolven.");
+            }
+        }
 
         // Functie om de selectbox van kolven te vullen bij het laden van de pagina
         function populateKolfSelectBox() {
