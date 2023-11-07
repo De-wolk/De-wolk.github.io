@@ -210,22 +210,13 @@
             `;
 
             // Sorteer de verhuur geschiedenis op datum en tijd
-            // Functie om een ISO 8601-datum te genereren van een gegeven datumstring
-function convertToISODate(dateString) {
-    const parts = dateString.split('/');
-    return `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
-}
-
-// Converteer de datums in de rentalHistory array naar ISO 8601-formaat
-rentalHistory.forEach(rental => {
-    rental.date = convertToISODate(rental.date);
-});
-
-// Sorteer de rentalHistory array op basis van de geconverteerde datums
-rentalHistory.sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
-});
-
+            rentalHistory.sort((a, b) => {
+                const dateComparison = new Date(b.date) - new Date(a.date);
+                if (dateComparison === 0) {
+                    return new Date(b.date).getTime() - new Date(a.date).getTime();
+                }
+                return dateComparison;
+            });
 
 
 
