@@ -1,0 +1,9 @@
+* {
+  font-family: Arial, sans-serif; /* Stel een algemeen lettertype in voor alle elementen */
+}
+
+article {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
