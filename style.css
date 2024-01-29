@@ -1,1 +1,93 @@
+* {
+  font-family: Arial, sans-serif; /* Stel een algemeen lettertype in voor alle elementen */
+}
 
+body {
+  background-image: url("https://www.de-wolk.be/themes/custom/bootstrap/starterkits/dewolkbe/images/backgrounds/home-bg.svg");
+  background-repeat: no-repeat;
+  background-size: cover; /* Optioneel: past de afbeelding aan aan de grootte van het scherm */
+}
+
+body h1 {
+  font-size: 25px;
+  text-align: center;
+}
+
+body label {
+  margin-left: 20px;
+}
+
+article {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+button {
+  border-radius: 10px;
+  padding: 7px 15px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 30%;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #f7aefa;
+  /box-shadow: 0 0 5px rgba(179, 133, 176, 0.5);
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    background-image: url("https://www.de-wolk.be/themes/custom/bootstrap/starterkits/dewolkbe/images/backgrounds/home-bg-mobile.svg");
+    background-repeat: no-repeat;
+    background-size: cover; /* Optioneel: past de afbeelding aan aan de grootte van het scherm */
+  }
+
+  body h1 {
+    font-size: 25px;
+    text-align: center;
+  }
+
+  body label {
+    margin-left: 20px;
+  }
+
+  article {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  button {
+    border-radius: 10px;
+    padding: 7px 15px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+  }
+
+  input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 70%;
+    box-sizing: border-box;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #f7aefa;
+    /box-shadow: 0 0 5px rgba(179, 133, 176, 0.5);
+  }
+}
