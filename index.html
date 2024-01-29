@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer type="module" src="./script.js"></script>
+    <!-- moet dit hieronder ?  -->
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js"
+    ></script>
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <article>
+        <h2>Kolven Verhuur Systeem</h2>
+        <a href="./historiek.html">Historiek</a>
+      </article>
+    </header>
+    <main>
+      <label for="naam">Naam:</label><br />
+      <input type="text" id="naam" name="naam" /><br />
 
+      <label for="adres">Adres:</label><br />
+      <input type="text" id="adres" name="adres" /><br />
+
+      <label for="gsm">GSM nummer:</label><br />
+      <input type="text" id="gsm" name="gsm" /><br /><br />
+
+      <button id="kolf1">Kolf 1</button>
+      <button id="kolf2">Kolf 2</button>
+      <button id="kolf3">Kolf 3</button>
+      <button id="kolf4">Kolf 4 Puurs</button>
+      <button id="kolf5">Kolf 5</button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Kolfnaam</th>
+            <th>Naam</th>
+            <th>Adres</th>
+            <th>GSM</th>
+          </tr>
+        </thead>
+        <tbody id="kolvenTableBody"></tbody>
+      </table>
+    </main>
+  </body>
+</html>
