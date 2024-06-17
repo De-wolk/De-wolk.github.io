@@ -55,7 +55,7 @@ async function verhuurKolf(kolfNummer) {
   const gsm = document.getElementById("gsm").value;
 
   // Kolfnaam instellen op basis van het kolfnummer
-  const kolfNaam = `Kolf ${kolfNummer}`;
+  const kolfNaam = kolfNummer <= 5 ? `Kolf ${kolfNummer}` : `glucometer ${kolfNummer - 5}`;
 
   // Verwijzing naar het specifieke document voor de kolf
   const kolfDocRef = doc(firestore, "kolven", kolfNaam);
@@ -116,7 +116,7 @@ async function verhuurKolf(kolfNummer) {
 
 // Functie om de kleur van de knop bij te werken op basis van de verhuurstatus
 async function updateButtonColor(kolfNummer) {
-  const kolfNaam = `Kolf ${kolfNummer}`;
+  const kolfNaam = kolfNummer <= 5 ? `Kolf ${kolfNummer}` : `glucometer ${kolfNummer - 5}`;
   const kolfDocRef = doc(firestore, "kolven", kolfNaam);
 
   try {
@@ -156,12 +156,20 @@ document.getElementById("kolf5").addEventListener("click", function () {
   verhuurKolf(5);
 });
 
+document.getElementById("kolf6").addEventListener("click", function () {
+  verhuurKolf(6);
+});
+
+document.getElementById("kolf7").addEventListener("click", function () {
+  verhuurKolf(7);
+});
+
 // Voeg event listener toe voor het laden van de pagina
 window.addEventListener("DOMContentLoaded", () => {
   // Display rented kolven and update button colors
   displayRentedKolven().then(() => {
     // Loop door alle kolven en update de knopkleuren
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 7; i++) {
       updateButtonColor(i);
     }
   });
